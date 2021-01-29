@@ -1,0 +1,343 @@
+{
+	"info": {
+		"_postman_id": "6e8251cb-a40f-473c-b58a-83370c6bbd26",
+		"name": "Desafio WebMotors Copy",
+		"description": "API WEbMotors Tester",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "API para recuperar marcas cadastradas na webmotors Implementation Notes",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var responseJSON;",
+							"",
+							"try { ",
+							"    responseJSON = JSON.parse(responseBody); ",
+							"    tests['response is valid JSON'] = true;",
+							"}",
+							"catch (e) { ",
+							"    responseJSON = {}; ",
+							"    tests['response is valid JSON'] = false;",
+							"}",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"tests[\"Quantidade de resultado\"] = responseJSON.length === 3;",
+							"",
+							"tests[\"ID do primeiro\"] = responseJSON[0].ID == 1",
+							"tests[\"Nome da Marca\"] = responseJSON[0].Name == \"Chevrolet\"",
+							"",
+							"tests[\"ID do segundo\"] = responseJSON[1].ID == 2",
+							"tests[\"Nome da Marca\"] = responseJSON[1].Name == \"Honda\"",
+							"",
+							"tests[\"ID do segundo\"] = responseJSON[2].ID == 3",
+							"tests[\"Nome da Marca\"] = responseJSON[2].Name == \"Ford\"",
+							"",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url_teste}}/OnlineChallenge/Make",
+					"host": [
+						"{{url_teste}}"
+					],
+					"path": [
+						"OnlineChallenge",
+						"Make"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "API para recuperar modelos cadastradas na webmotors",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var responseJSON;",
+							"",
+							"var expectResponseMakeId1 = [",
+							"  {",
+							"    \"MakeID\": 1,",
+							"    \"ID\": 1,",
+							"    \"Name\": \"Agile\"",
+							"  },",
+							"  {",
+							"    \"MakeID\": 1,",
+							"    \"ID\": 2,",
+							"    \"Name\": \"Astra\"",
+							"  },",
+							"  {",
+							"    \"MakeID\": 1,",
+							"    \"ID\": 3,",
+							"    \"Name\": \"Onix\"",
+							"  }",
+							"]",
+							"",
+							"var expectResponseMakeId2 = [",
+							"  {",
+							"    \"MakeID\": 2,",
+							"    \"ID\": 4,",
+							"    \"Name\": \"City\"",
+							"  },",
+							"  {",
+							"    \"MakeID\": 2,",
+							"    \"ID\": 5,",
+							"    \"Name\": \"CRV\"",
+							"  },",
+							"  {",
+							"    \"MakeID\": 2,",
+							"    \"ID\": 6,",
+							"    \"Name\": \"Fit\"",
+							"  }",
+							"]",
+							"",
+							"var expectResponseMakeId3 = [",
+							"  {",
+							"    \"MakeID\": 3,",
+							"    \"ID\": 7,",
+							"    \"Name\": \"Ecosport\"",
+							"  },",
+							"  {",
+							"    \"MakeID\": 3,",
+							"    \"ID\": 8,",
+							"    \"Name\": \"Fussion\"",
+							"  }",
+							"]",
+							"",
+							"try { ",
+							"    responseJSON = JSON.parse(responseBody); ",
+							"    tests['response is valid JSON'] = true;",
+							"}",
+							"catch (e) { ",
+							"    responseJSON = {}; ",
+							"    tests['response is valid JSON'] = false;",
+							"}",
+							"",
+							"if(responseJSON[0].MakeID == 1){",
+							"    expectResponseMakeId1.forEach((res, index) => {",
+							"        tests[\"Make ID 1, Id expect: \"+ res.ID] = responseJSON[index].ID == res.ID ",
+							"        tests[\"Make ID 1, Name expect: \"+ res.Name] = responseJSON[index].Name == res.Name ",
+							"    })",
+							"}else if(responseJSON[0].MakeID == 2){",
+							"    expectResponseMakeId2.forEach((res, index) => {",
+							"        tests[\"Make ID 2, Id expect: \"+ res.ID] = responseJSON[index].ID == res.ID ",
+							"        tests[\"Make ID 2, Name expect: \"+ res.Name] = responseJSON[index].Name == res.Name ",
+							"    })",
+							"}",
+							"else if(responseJSON[0].MakeID == 3){",
+							"    expectResponseMakeId3.forEach((res, index) => {",
+							"        tests[\"Make ID 3, Id expect: \"+ res.ID] = responseJSON[index].ID == res.ID ",
+							"        tests[\"Make ID 3, Name expect: \"+ res.Name] = responseJSON[index].Name == res.Name ",
+							"    })",
+							"}",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let queryParams = \"?MakeID=2\"\r",
+							"pm.globals.set(\"queryParams\", queryParams)\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://desafioonline.webmotors.com.br/api/OnlineChallenge/Model{{queryParams}}",
+					"protocol": "http",
+					"host": [
+						"desafioonline",
+						"webmotors",
+						"com",
+						"br"
+					],
+					"path": [
+						"api",
+						"OnlineChallenge",
+						"Model{{queryParams}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "API para recuperar versões cadastradas na webmotors",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let queryParams = \"?ModelID=2\"\r",
+							"pm.globals.set(\"queryParams\", queryParams)"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var responseJSON;\r",
+							"\r",
+							"var expectResponseModelID = [\r",
+							"  {\r",
+							"    \"ModelID\": 2,\r",
+							"    \"ID\": 11,\r",
+							"    \"Versao\": \"1.5 DX 16V FLEX 4P AUTOMÁTICO\"\r",
+							"  },\r",
+							"  {\r",
+							"    \"ModelID\": 2,\r",
+							"    \"ID\": 12,\r",
+							"    \"Versao\": \"1.5 LX 16V FLEX 4P MANUAL\"\r",
+							"  },\r",
+							"  {\r",
+							"    \"ModelID\": 2,\r",
+							"    \"ID\": 13,\r",
+							"    \"Versao\": \"2.0 EXL 4X4 16V GASOLINA 4P AUTOMÁTICO\"\r",
+							"  },\r",
+							"  {\r",
+							"    \"ModelID\": 2,\r",
+							"    \"ID\": 14,\r",
+							"    \"Versao\": \"1.8 16V EVO FLEX FREEDOM OPEN EDITION AUTOMÁTICO\"\r",
+							"  },\r",
+							"  {\r",
+							"    \"ModelID\": 2,\r",
+							"    \"ID\": 15,\r",
+							"    \"Versao\": \"1.0 MPI EL 8V FLEX 4P MANUAL\"\r",
+							"  }\r",
+							"]\r",
+							"\r",
+							"try { \r",
+							"    responseJSON = JSON.parse(responseBody); \r",
+							"    tests['response is valid JSON'] = true;\r",
+							"}\r",
+							"catch (e) { \r",
+							"    responseJSON = {}; \r",
+							"    tests['response is valid JSON'] = false;\r",
+							"}\r",
+							"\r",
+							"responseJSON.forEach(res => {\r",
+							"    tests['response is valid 3'] = res.ModelID == 2  \r",
+							"    tests['response is valid Tipo do ID'] = typeof res.ID === \"number\"\r",
+							"    tests['response is valid Tipo do ID'] = typeof res.Name === \"string\"\r",
+							"})\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://desafioonline.webmotors.com.br/api/OnlineChallenge/Version{{queryParams}}",
+					"protocol": "http",
+					"host": [
+						"desafioonline",
+						"webmotors",
+						"com",
+						"br"
+					],
+					"path": [
+						"api",
+						"OnlineChallenge",
+						"Version{{queryParams}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "API para recuperar versões cadastradas na webmotors",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let queryParams = \"?Page=33\"\r",
+							"pm.globals.set(\"queryParams\", queryParams)\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var responseJSON;\r",
+							"\r",
+							"try { \r",
+							"    responseJSON = JSON.parse(responseBody); \r",
+							"    tests['response is valid JSON'] = true;\r",
+							"}\r",
+							"catch (e) { \r",
+							"    responseJSON = {}; \r",
+							"    tests['response is valid JSON'] = false;\r",
+							"}\r",
+							"\r",
+							"switch (pm.globals.get(\"queryParams\")){\r",
+							"    case(\"?Page=1\"):\r",
+							"        tests['Quantidade de versoes de veiculo na paginae 1'] = responseJSON.length == 10\r",
+							"        break\r",
+							"    case(\"?Page=2\"):\r",
+							"        tests['Quantidade de versoes de veiculo na paginae 2'] = responseJSON.length == 10\r",
+							"        break\r",
+							"    case(\"?Page=3\"):\r",
+							"        tests['Quantidade de versoes de veiculo na paginae 3'] = responseJSON.length == 1\r",
+							"        break\r",
+							"    default:\r",
+							"        tests['Quantidade de versoes de veiculo na paginae cazio'] = responseJSON.length == 0\r",
+							"        break\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://desafioonline.webmotors.com.br/api/OnlineChallenge/Vehicles{{queryParams}}",
+					"protocol": "http",
+					"host": [
+						"desafioonline",
+						"webmotors",
+						"com",
+						"br"
+					],
+					"path": [
+						"api",
+						"OnlineChallenge",
+						"Vehicles{{queryParams}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
